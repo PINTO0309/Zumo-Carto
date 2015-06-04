@@ -1,0 +1,3 @@
+#ZUMO_PORT: '/dev/ttyACM0'
+ZUMO_PORT: '/dev/ttyUSB0'
+ZUMO_BAUDRATE : '9600'

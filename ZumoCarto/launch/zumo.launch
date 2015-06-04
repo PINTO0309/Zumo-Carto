@@ -1,0 +1,24 @@
+<launch>
+    <rosparam 
+        command="load" 
+        file="$(find zumo)/config/param.yaml" 
+    />
+    <node 
+        pkg="zumo" 
+        name="zumo" 
+        type="zumo.py"
+        output="screen"
+    />
+    <node
+        pkg="nunchuk2cmdvel"
+        name="nunchuk2cmdvel"
+        type="nunchuk2cmdvel.py"
+        output="screen"
+    />
+    <node 
+        name="rviz" 
+        pkg="rviz" 
+        type="rviz" 
+        args="-d $(find zumo)/rviz/zumo.rviz" 
+    />  
+</launch>
