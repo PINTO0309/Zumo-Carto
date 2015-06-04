@@ -1,14 +1,18 @@
 #include <Wire.h>
 #include <LSM303.h>
 #include <ZumoMotors.h>
+#include <Encoder.h>
+
 
 long timer=0;
-int vmax = 350;
+int vmax = 200;
 int vright = 0;
 int vleft = 0;
 
 LSM303 compass;
 ZumoMotors motors;
+Encoder EncLeft(2, 4);
+Encoder EncRight(6, 11);
 
 // Buffer qui va contenir la trame série
 #define TAILLE_MAX 32
@@ -18,6 +22,8 @@ char texte[TAILLE_MAX];
 // Données utiles extraites
 int cons_vitesse,cons_angle,angle;
 float vitesse;
+long positionLeft  = -999;
+long positionRight = -999;
 
 void setup() {
   Serial.begin(9600);
@@ -30,7 +36,9 @@ void setup() {
 
 void loop()
 {
-// Récupération d'une trame + parsing
+long newLeft, newRight;
+  
+  // Récupération d'une trame + parsing
   if(recupInfo(texte,&cons_vitesse,&cons_angle)==1) {Serial.println("Erreur de trame 1!");}
   if(recupInfo(texte,&cons_vitesse,&cons_angle)==2) {Serial.println("Erreur de trame 2!");}
 
@@ -49,7 +57,14 @@ else
   
   motors.setRightSpeed(vright);
   motors.setLeftSpeed(vleft);
-  delay(1);
+  newLeft = EncLeft.read();
+  newRight = EncRight.read();
+  if (newLeft != positionLeft || newRight != positionRight) {
+
+    positionLeft = newLeft;
+    positionRight = newRight;
+  }
+  //delay(1);
 
 
 // Envoie les infos de la centrale
@@ -66,7 +81,12 @@ else
   Serial.print (vleft);
   Serial.print (",");
   Serial.print (vright);
-  Serial.println(); 
+  Serial.print (",");
+  Serial.print(newLeft);
+  Serial.print (",");
+  Serial.print(newRight);
+  Serial.println();
+
   
 }
 
