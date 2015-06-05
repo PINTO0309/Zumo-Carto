@@ -11,8 +11,8 @@ int vleft = 0;
 
 LSM303 compass;
 ZumoMotors motors;
-Encoder EncLeft(2, 4);
-Encoder EncRight(6, 11);
+Encoder EncLeft(2, 5);
+Encoder EncRight(3, 4);
 
 // Buffer qui va contenir la trame série
 #define TAILLE_MAX 32
