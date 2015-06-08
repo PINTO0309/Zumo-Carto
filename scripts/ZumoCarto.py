@@ -107,6 +107,7 @@ class Zumo:
         self.p.orientation.x= float(self.centrale[4])
         self.p.orientation.y=float(self.centrale[5])
         self.p.orientation.z=float(self.centrale[6])
+        self.p.header.stamp = rospy.Time.now()
         self.pub_imu.publish(self.p)
     
     def pubodom(self):
@@ -126,7 +127,8 @@ class Zumo:
         self.o.pose.pose.orientation.z += deltat*(VL-VR)/self.ENTREAXE    
         self.o.twist.twist.linear.x =(VR+VL)/2*cos(self.o.pose.pose.orientation.z)
         self.o.twist.twist.linear.y =(VR+VL)/2*sin(self.o.pose.pose.orientation.z)
-        self.o.twist.twist.angular.z = (VL-VR)/self.ENTREAXE      
+        self.o.twist.twist.angular.z = (VL-VR)/self.ENTREAXE    
+        self.o.header.stamp = rospy.Time.now()
         self.pub_odom.publish(self.o)
         #print self.o.pose.pose.position.x*100,self.o.pose.pose.position.y*100,self.o.pose.pose.orientation.z*360/6.28
 

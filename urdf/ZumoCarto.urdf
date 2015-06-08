@@ -5,7 +5,7 @@
     <link name="odom"/>
     <link name="base">
         <visual>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <origin rpy="0 0 3.14" xyz="0 0 0"/>
             <geometry>
                 <mesh filename="package://ZumoCarto/urdf/zumo.STL" scale="0.1 0.1 0.1"/>
             </geometry>
@@ -15,23 +15,23 @@
         </visual>
     </link>
     
-    <joint name="joint1" type="planar">
+    <joint name="joint1" type="floating">
         <parent link="map"/>
-        <child link="base"/>
-        <axis xyz="0 0 1"/>
+        <child link="odom"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <!--<limit effort="1000" lower="-10" upper="10" velocity="0.2"/>-->
         </joint>
+    <joint name="jointodom" type="fixed">
+        <parent link="odom"/>
+        <child link="base"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+    </joint>
     <joint name="jointimu" type="fixed">
         <parent link="base"/>
         <child link="imu"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
     </joint>
-    <joint name="jointodom" type="fixed">
-        <parent link="base"/>
-        <child link="odom"/>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
-    </joint>
+
   
   
 </robot>

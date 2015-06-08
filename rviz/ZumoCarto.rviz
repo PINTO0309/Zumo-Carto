@@ -6,18 +6,10 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /Imu1
-        - /Imu1/Status1
         - /Odometry1
-        - /Odometry1/Status1
+        - /TF1
         - /TF1/Frames1
-        - /TF1/Frames1/base1
-        - /TF1/Frames1/imu1
-        - /TF1/Frames1/map1
-        - /TF1/Frames1/odom1
-        - /TF1/Tree1/map1
-        - /TF1/Tree1/map1/base1
-      Splitter Ratio: 0.5
+      Splitter Ratio: 0.585987
     Tree Height: 690
   - Class: rviz/Selection
     Name: Selection
@@ -90,8 +82,8 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.05
-      Style: Flat Squares
+      Size (m): 0.02
+      Style: Boxes
       Topic: /scan
       Use Fixed Frame: true
       Use rainbow: true
@@ -131,10 +123,10 @@ Visualization Manager:
       Visual Enabled: true
     - Angle Tolerance: 0.1
       Class: rviz/Odometry
-      Color: 255; 25; 0
+      Color: 255; 255; 0
       Enabled: true
-      Keep: 100
-      Length: 1
+      Keep: 20
+      Length: 0.2
       Name: Odometry
       Position Tolerance: 0.1
       Topic: /ZumoCarto/odom
@@ -147,11 +139,11 @@ Visualization Manager:
         base:
           Value: true
         imu:
-          Value: false
+          Value: true
         map:
-          Value: false
+          Value: true
         odom:
-          Value: false
+          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true
@@ -159,11 +151,10 @@ Visualization Manager:
       Show Names: true
       Tree:
         map:
-          base:
-            imu:
-              {}
-            odom:
-              {}
+          odom:
+            base:
+              imu:
+                {}
       Update Interval: 0
       Value: true
   Enabled: true
@@ -190,7 +181,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.21968
+      Distance: 1.4835
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
@@ -202,10 +193,10 @@ Visualization Manager:
         Z: -0.161846
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 1.2904
+      Pitch: 0.4004
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.18542
+      Yaw: 3.88543
     Saved: ~
 Window Geometry:
   Displays:
