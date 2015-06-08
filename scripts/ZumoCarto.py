@@ -5,11 +5,13 @@
 import serial
 from math import sqrt, cos, sin
 import rospy
+import tf
 from time import sleep
 from threading import Lock
 from geometry_msgs.msg import Twist, Pose
 from sensor_msgs.msg import Imu
 from nav_msgs.msg import Odometry
+
 
 
 class Zumo:
@@ -20,6 +22,7 @@ class Zumo:
         self.temps=0
         self.odomR=0
         self.odomL=0
+        self.theta=0
         self.sub_pose=rospy.Subscriber("/nunchuk/cmd_vel",Twist,self.cb_cmdvel)
         self.pub_imu=rospy.Publisher("/ZumoCarto/imu",Imu,queue_size=10)
         self.pub_odom=rospy.Publisher("/ZumoCarto/odom",Odometry,queue_size=10)
@@ -124,7 +127,14 @@ class Zumo:
         
         self.o.pose.pose.position.x += deltat*(VR+VL)/2*cos(self.o.pose.pose.orientation.z)
         self.o.pose.pose.position.y += deltat*(VR+VL)/2*sin(self.o.pose.pose.orientation.z)
-        self.o.pose.pose.orientation.z += deltat*(VL-VR)/self.ENTREAXE    
+        self.theta += deltat*(VL-VR)/self.ENTREAXE    
+        
+        quat = tf.transformations.quaternion_from_euler(0,0,self.theta)
+        ### Insert math into Odom msg so it can be published
+        self.o.pose.pose.orientation.x = quat[0]
+        self.o.pose.pose.orientation.y = quat[1]
+        self.o.pose.pose.orientation.z = quat[2]
+        self.o.pose.pose.orientation.w = quat[3]
         self.o.twist.twist.linear.x =(VR+VL)/2*cos(self.o.pose.pose.orientation.z)
         self.o.twist.twist.linear.y =(VR+VL)/2*sin(self.o.pose.pose.orientation.z)
         self.o.twist.twist.angular.z = (VL-VR)/self.ENTREAXE    
