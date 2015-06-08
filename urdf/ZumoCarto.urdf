@@ -15,13 +15,13 @@
         </visual>
     </link>
     
-    <joint name="joint1" type="floating">
+    <joint name="joint1" type="fixed">
         <parent link="map"/>
         <child link="odom"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <!--<limit effort="1000" lower="-10" upper="10" velocity="0.2"/>-->
         </joint>
-    <joint name="jointodom" type="fixed">
+    <joint name="jointodom" type="floating">
         <parent link="odom"/>
         <child link="base"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
