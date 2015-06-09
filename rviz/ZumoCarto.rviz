@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /LaserScan1
         - /Odometry1
         - /TF1
         - /TF1/Frames1
@@ -84,7 +85,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.02
       Style: Boxes
-      Topic: /scan
+      Topic: /ZumoCarto/scan
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
@@ -98,7 +99,11 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base:
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        footprint:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -112,6 +117,10 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
         odom:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        scan:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -136,13 +145,17 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        base:
+        base_link:
+          Value: true
+        footprint:
           Value: true
         imu:
           Value: true
         map:
           Value: true
         odom:
+          Value: true
+        scan:
           Value: true
       Marker Scale: 1
       Name: TF
@@ -152,8 +165,12 @@ Visualization Manager:
       Tree:
         map:
           odom:
-            base:
+            footprint:
+              base_link:
+                {}
               imu:
+                {}
+              scan:
                 {}
       Update Interval: 0
       Value: true

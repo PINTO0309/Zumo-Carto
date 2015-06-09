@@ -1,25 +1,61 @@
 <?xml version="1.0" ?>
 
 <launch>
-    <rosparam command="load" file="$(find ZumoCarto)/config/param.yaml" />
-    <param name="robot_description" textfile="$(find ZumoCarto)/urdf/ZumoCarto.urdf" />
-    
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false"         output="screen">
-        <remap from="/joint_states" to="/ZumoCarto/joint_states" />
+    <rosparam 
+        command="load" 
+        file="$(find ZumoCarto)/config/param.yaml" 
+    />
+    <param 
+        name="robot_description" 
+        textfile="$(find ZumoCarto)/urdf/ZumoCarto.urdf" 
+    />
+    <node 
+        name="joint_state_publisher" 
+        pkg="joint_state_publisher" 
+        type="joint_state_publisher" 
+    />
+    <node 
+        name="robot_state_publisher" 
+        pkg="robot_state_publisher" 
+        type="robot_state_publisher" 
+        respawn="false"         
+        output="screen">
+        <remap 
+            from="/joint_states" 
+            to="/ZumoCarto/joint_states" 
+        />
     </node>
-    
-    
-    <node pkg="ZumoCarto" name="ZumoCarto" type="ZumoCarto.py" output="screen"/>
-    <node pkg="nunchuk2cmdvel" name="nunchuk2cmdvel" type="nunchuk2cmdvel.py" output="screen"/>
-    <node name="rplidarNode"          pkg="rplidar_ros"  type="rplidarNode" output="screen">
+    <node 
+        pkg="ZumoCarto" 
+        name="ZumoCarto" 
+        type="ZumoCarto.py" 
+        output="screen"
+    />
+    <node 
+        pkg="nunchuk2cmdvel" 
+        name="nunchuk2cmdvel" 
+        type="nunchuk2cmdvel.py" 
+        output="screen"
+    />
+    <node 
+        name="rplidarNode"          
+        pkg="rplidar_ros"  
+        type="rplidarNode" 
+        output="screen">
         <param name="serial_port"         type="string" value="/dev/ttyUSB0"/>  
         <param name="serial_baudrate"     type="int"    value="115200"/>
-        <param name="frame_id"            type="string" value="base"/>
+        <param name="frame_id"            type="string" value="scan"/>
         <param name="inverted"            type="bool"   value="false"/>
         <param name="angle_compensate"    type="bool"   value="true"/>
+        <remap 
+            from="/scan" 
+            to="/ZumoCarto/scan" 
+        />
     </node>
-    />
-    
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ZumoCarto)/rviz/ZumoCarto.rviz" /> 
+    <node
+        name="rviz" 
+        pkg="rviz" 
+        type="rviz" 
+        args="-d $(find ZumoCarto)/rviz/ZumoCarto.rviz" 
+    /> 
 </launch>

@@ -26,6 +26,7 @@ class Zumo:
         self.sub_pose=rospy.Subscriber("/nunchuk/cmd_vel",Twist,self.cb_cmdvel)
         self.pub_imu=rospy.Publisher("/ZumoCarto/imu",Imu,queue_size=10)
         self.pub_odom=rospy.Publisher("/ZumoCarto/odom",Odometry,queue_size=10)
+        self.tf_br = tf.TransformBroadcaster()
         try:
             self.PORT=rospy.get_param('ZUMO_PORT') 
         except:
@@ -47,8 +48,8 @@ class Zumo:
         self.o.pose.pose.position.z = 0.0
         self.o.pose.pose.orientation.z = 0.0        
         self.o.header.stamp = rospy.Time.now()
-        self.o.header.frame_id="odom"
-        self.o.child_frame_id="base"
+        self.o.header.frame_id="map"
+        self.o.child_frame_id="base_link"
         self.p=Imu()
         self.p.header.stamp = rospy.Time.now()
         self.p.header.frame_id="imu"
@@ -121,26 +122,41 @@ class Zumo:
             self.odomL=float(self.centrale[9]) 
             self.odomR=float(self.centrale[10])
             self.temps=self.centrale[0]
+            self.o.pose.pose.position.x += deltat*(VR+VL)/2*cos(-self.theta)
+            self.o.pose.pose.position.y += deltat*(VR+VL)/2*sin(-self.theta)
+            self.theta += deltat*(VL-VR)/self.ENTREAXE    
+            
+            quat = tf.transformations.quaternion_from_euler(0,0,-self.theta)
+            ### Insert math into Odom msg so it can be published
+            self.o.pose.pose.orientation.x = quat[0]
+            self.o.pose.pose.orientation.y = quat[1]
+            self.o.pose.pose.orientation.z = quat[2]
+            self.o.pose.pose.orientation.w = quat[3]
+            self.o.twist.twist.linear.x =(VR+VL)/2*cos(-self.theta)
+            self.o.twist.twist.linear.y =(VR+VL)/2*sin(-self.theta)
+            self.o.twist.twist.angular.z = (VL-VR)/self.ENTREAXE    
+            self.o.header.stamp = rospy.Time.now()
+            self.pub_odom.publish(self.o)
+            #print self.o.pose.pose.position.x*100,self.o.pose.pose.position.y*100,self.o.pose.pose.orientation.z*360/6.28
+            pos = (self.o.pose.pose.position.x,
+                   self.o.pose.pose.position.y,
+                   self.o.pose.pose.position.z)
+    
+            ori = (self.o.pose.pose.orientation.x,
+                   self.o.pose.pose.orientation.y,
+                   self.o.pose.pose.orientation.z,
+                   self.o.pose.pose.orientation.w)       
+            self.tf_br.sendTransform(pos, ori, rospy.Time.now(), 'base_link', 'map')
+            
+            
+            
+            
         else :
             VR=0
             VL=0
         
-        self.o.pose.pose.position.x += deltat*(VR+VL)/2*cos(-self.theta)
-        self.o.pose.pose.position.y += deltat*(VR+VL)/2*sin(-self.theta)
-        self.theta += deltat*(VL-VR)/self.ENTREAXE    
-        
-        quat = tf.transformations.quaternion_from_euler(0,0,-self.theta)
-        ### Insert math into Odom msg so it can be published
-        self.o.pose.pose.orientation.x = quat[0]
-        self.o.pose.pose.orientation.y = quat[1]
-        self.o.pose.pose.orientation.z = quat[2]
-        self.o.pose.pose.orientation.w = quat[3]
-        self.o.twist.twist.linear.x =(VR+VL)/2*cos(-self.theta)
-        self.o.twist.twist.linear.y =(VR+VL)/2*sin(-self.theta)
-        self.o.twist.twist.angular.z = (VL-VR)/self.ENTREAXE    
-        self.o.header.stamp = rospy.Time.now()
-        self.pub_odom.publish(self.o)
-        #print self.o.pose.pose.position.x*100,self.o.pose.pose.position.y*100,self.o.pose.pose.orientation.z*360/6.28
+           
+
 
 if __name__=="__main__":
 
