@@ -103,20 +103,8 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        footprint:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
           Value: true
         imu:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        map:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        odom:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -147,13 +135,9 @@ Visualization Manager:
         All Enabled: false
         base_link:
           Value: true
-        footprint:
-          Value: true
         imu:
           Value: true
         map:
-          Value: true
-        odom:
           Value: true
         scan:
           Value: true
@@ -164,14 +148,11 @@ Visualization Manager:
       Show Names: true
       Tree:
         map:
-          odom:
-            footprint:
-              base_link:
-                {}
-              imu:
-                {}
-              scan:
-                {}
+          base_link:
+            imu:
+              {}
+            scan:
+              {}
       Update Interval: 0
       Value: true
   Enabled: true
@@ -198,22 +179,22 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.4835
+      Distance: 4.3994
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.568364
-        Y: 0.376515
-        Z: -0.161846
+        X: 0.136841
+        Y: 0.0434384
+        Z: 0.289877
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.4004
+      Pitch: 0.5254
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.88543
+      Yaw: 3.95043
     Saved: ~
 Window Geometry:
   Displays:

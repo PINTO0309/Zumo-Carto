@@ -20,8 +20,6 @@ class Zumo:
         self.ENTREAXE=0.084 #en metre
         self.COUNT=48
         self.temps=0
-        self.odomR=0
-        self.odomL=0
         self.theta=0
         self.sub_pose=rospy.Subscriber("/nunchuk/cmd_vel",Twist,self.cb_cmdvel)
         self.pub_imu=rospy.Publisher("/ZumoCarto/imu",Imu,queue_size=10)
@@ -59,9 +57,23 @@ class Zumo:
             self.ser = serial.Serial( self.PORT, self.BAUDRATE,timeout=self.TIMEOUT)
             sleep(1)
             rospy.loginfo("connexion serie etablie sur le port "+str(self.PORT))
-
         except:
             rospy.loginfo("Echec connexion serie")
+            
+            
+        test=0
+        while test==0:    
+            line = self.ser.readline() # reception trame accelero/magneto/gyro
+            if len(line)>0:
+                if line.startswith('!AN'):
+                    line = line.replace("!AN:", "")
+                    line = line.replace("\r\n", "")
+                    self.centrale=line.split(',')
+                    self.odomL=float(self.centrale[9]) 
+                    self.odomR=float(self.centrale[10])
+                    test=1
+                    rospy.loginfo( "init odom "+str(self.odomL)+" et "+str(self.odomR))
+                        
             
     def __delete__(self):
         self.ser.close()
@@ -76,13 +88,21 @@ class Zumo:
                sleep(0.001)
                line = self.ser.readline() # reception trame accelero/magneto/gyro
                if len(line)>0:
-                   if line.startswith('!AN'):
+                   if line.startswith('!AN') and line.endswith('\r\n'): 
                        line = line.replace("!AN:", "")
                        line = line.replace("\r\n", "")
                        self.centrale=line.split(',')
-                       rospy.loginfo( "Trame recue : "+str(self.centrale))
-                       self.pubimu()
-                       self.pubodom()
+                       
+                       if len(self.centrale)==11:
+                           rospy.loginfo( "Trame recue : "+str(self.centrale))
+                           #rospy.loginfo( "odom "+str(self.centrale[9])+" et "+str(self.centrale[10])
+                           self.pubimu()
+                           self.pubodom()
+#                       else:
+#                           rospy.loginfo("trame pas a la taille")
+#                   else:
+#                        rospy.loginfo("trame non conforme")
+                           
            except :
                rospy.loginfo("recup trame en rade !")
               
@@ -122,40 +142,37 @@ class Zumo:
             self.odomL=float(self.centrale[9]) 
             self.odomR=float(self.centrale[10])
             self.temps=self.centrale[0]
-            self.o.pose.pose.position.x += deltat*(VR+VL)/2*cos(-self.theta)
-            self.o.pose.pose.position.y += deltat*(VR+VL)/2*sin(-self.theta)
-            self.theta += deltat*(VL-VR)/self.ENTREAXE    
-            
-            quat = tf.transformations.quaternion_from_euler(0,0,-self.theta)
-            ### Insert math into Odom msg so it can be published
-            self.o.pose.pose.orientation.x = quat[0]
-            self.o.pose.pose.orientation.y = quat[1]
-            self.o.pose.pose.orientation.z = quat[2]
-            self.o.pose.pose.orientation.w = quat[3]
-            self.o.twist.twist.linear.x =(VR+VL)/2*cos(-self.theta)
-            self.o.twist.twist.linear.y =(VR+VL)/2*sin(-self.theta)
-            self.o.twist.twist.angular.z = (VL-VR)/self.ENTREAXE    
-            self.o.header.stamp = rospy.Time.now()
-            self.pub_odom.publish(self.o)
-            #print self.o.pose.pose.position.x*100,self.o.pose.pose.position.y*100,self.o.pose.pose.orientation.z*360/6.28
-            pos = (self.o.pose.pose.position.x,
-                   self.o.pose.pose.position.y,
-                   self.o.pose.pose.position.z)
-    
-            ori = (self.o.pose.pose.orientation.x,
-                   self.o.pose.pose.orientation.y,
-                   self.o.pose.pose.orientation.z,
-                   self.o.pose.pose.orientation.w)       
-            self.tf_br.sendTransform(pos, ori, rospy.Time.now(), 'base_link', 'map')
-            
-            
-            
-            
         else :
             VR=0
-            VL=0
+            VL=0        
+            
+        self.o.pose.pose.position.x += deltat*(VR+VL)/2*cos(self.theta)
+        self.o.pose.pose.position.y += deltat*(VR+VL)/2*sin(self.theta)
+        self.theta += deltat*(VL-VR)/self.ENTREAXE    
         
-           
+        quat = tf.transformations.quaternion_from_euler(0,0,self.theta)
+        ### Insert math into Odom msg so it can be published
+        self.o.pose.pose.orientation.x = quat[0]
+        self.o.pose.pose.orientation.y = quat[1]
+        self.o.pose.pose.orientation.z = quat[2]
+        self.o.pose.pose.orientation.w = quat[3]
+        self.o.twist.twist.linear.x =(VR+VL)/2*cos(self.theta)
+        self.o.twist.twist.linear.y =(VR+VL)/2*sin(self.theta)
+        self.o.twist.twist.angular.z = (VL-VR)/self.ENTREAXE    
+        self.o.header.stamp = rospy.Time.now()
+        self.pub_odom.publish(self.o)
+        #print self.o.pose.pose.position.x*100,self.o.pose.pose.position.y*100,self.o.pose.pose.orientation.z*360/6.28
+        pos = (self.o.pose.pose.position.x,
+               self.o.pose.pose.position.y,
+               self.o.pose.pose.position.z)
+
+        ori = (self.o.pose.pose.orientation.x,
+               self.o.pose.pose.orientation.y,
+               self.o.pose.pose.orientation.z,
+               self.o.pose.pose.orientation.w)       
+        self.tf_br.sendTransform(pos, ori, rospy.Time.now(), 'base_link', 'map')
+            
+
 
 
 if __name__=="__main__":

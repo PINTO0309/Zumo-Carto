@@ -5,7 +5,7 @@
 
 
 long timer=0;
-int vmax = 200;
+int vmax = 300;
 int vright = 0;
 int vleft = 0;
 
@@ -22,21 +22,28 @@ char texte[TAILLE_MAX];
 // Données utiles extraites
 int cons_vitesse,cons_angle,angle;
 float vitesse;
-long positionLeft  = -999;
-long positionRight = -999;
+long positionLeft  = 0;
+long positionRight = 0;
+long newLeft, newRight;
 
+//RPLIDAR
+#define RPLIDAR_MOTOR 6
+  
 void setup() {
   Serial.begin(9600);
   Serial.println("Serial");
   Wire.begin();
   compass.init();
   compass.enableDefault();
+  
+  pinMode(RPLIDAR_MOTOR,OUTPUT);
+  //analogWrite(RPLIDAR_MOTOR,255);
 }
 
 
 void loop()
 {
-long newLeft, newRight;
+
   
   // Récupération d'une trame + parsing
   if(recupInfo(texte,&cons_vitesse,&cons_angle)==1) {Serial.println("Erreur de trame 1!");}
@@ -47,7 +54,7 @@ if (cons_vitesse>-30 && cons_vitesse<30) // tourne sur place
 else
   {
     if (cons_angle>-30 && cons_angle<30) //tout droit
-      {vleft=int(vmax*float(cons_vitesse)/100);vright=int(vmax*float(cons_vitesse)/100);}
+      {vleft=int(200*float(cons_vitesse)/100);vright=int(200*float(cons_vitesse)/100);} ///2 sinon il bascule...
     else if (cons_angle<=-30) //tourne a gauche
       {vright=int(vmax*float(cons_vitesse)/100*(0.4-(float(cons_angle)/100)));vleft=int(float(vright)*(1+float(cons_angle)/100));}
     else if (cons_angle>=30) //tourne a droite
@@ -64,7 +71,7 @@ else
     positionLeft = newLeft;
     positionRight = newRight;
   }
-  //delay(1);
+  //delay(10);
 
 
 // Envoie les infos de la centrale
