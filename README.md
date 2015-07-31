@@ -8,7 +8,7 @@ le but est de crée un robot pour faire du SLAM à partir :
 
 -  de 2 encoders
 <https://www.pololu.com/product/1217>
-![alt text](https://www.pololu.com/picture/view/0J1201)
+![alt text](https://a.pololu-files.com/picture/0J1201.1200.jpg?3efcdf66aef803038c8ce0035cd380fc)
 
 - un lidar 2D (RPLidar)
 <http://www.slamtec.com/en-US/rplidar/index>
@@ -19,6 +19,8 @@ le but est de crée un robot pour faire du SLAM à partir :
 - des modules Xbee pour la communication sans fil de la carte Arduino et du lidar
 
 ## INTEGRATION
+piece d'interface zumo/Rplider en impression 3D (dans le dossier URDF)
+![alt text](https://github.com/Rastafouille/Zumo-Carto/raw/master/galerie/3D.jpg)
 ![alt text](https://github.com/Rastafouille/Zumo-Carto/raw/master/galerie/robot.jpg)
 
 ## RVIZ
@@ -53,9 +55,6 @@ Pour ma part, la clé Bluetooth doit être réinitialisée à chaque redémarrag
 Seul le joystick 2 axes du Nunchuk est utilisé :
 
 ![alt text](https://agita/cea-robotics/ros-zumo/raw/master/Galerie/pilotage.png)
-
-
-
 
 ## Launch file
 
