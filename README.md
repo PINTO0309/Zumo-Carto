@@ -24,7 +24,7 @@ piece d'interface zumo/Rplider en impression 3D (dans le dossier URDF)
 ![alt text](https://github.com/Rastafouille/Zumo-Carto/raw/master/galerie/robot.jpg)
 
 ## RVIZ
-![alt text](https://github.com/Rastafouille/Zumo-Carto/raw/master/galerie/rviz.png)
+![alt text](https://github.com/Rastafouille/Zumo-Carto/raw/master/galerie/rviz2.png)
 
 ## ZUMO node
 	rosrun zumo zumo.py
