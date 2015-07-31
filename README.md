@@ -26,7 +26,9 @@ piece d'interface zumo/Rplider en impression 3D (dans le dossier URDF)
 ## RVIZ
 ![alt text](https://github.com/Rastafouille/Zumo-Carto/raw/master/galerie/rviz2.png)
 
-## ZUMO node
+## ZUMO node 
+mettre a jour la trame avec les valeurs des encoder et le topic
+
 	rosrun zumo zumo.py
 Ce noeud permet la communication série avec la carte Arduino et son shield Zumo.
 Le robot envoie une trame d'état de ses capteurs et actionneurs :
@@ -56,8 +58,15 @@ Seul le joystick 2 axes du Nunchuk est utilisé :
 
 ![alt text](https://agita/cea-robotics/ros-zumo/raw/master/Galerie/pilotage.png)
 
-## Launch file
 
+## RPLIDAR node
+a completer
+
+## URDF
+a completer
+
+## Launch file
+a completer avec les TF...
 
 
 
