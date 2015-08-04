@@ -1016,12 +1016,12 @@ body .markdown-body
 }
 </style><title>README</title></head><body><article class="markdown-body"><p>Projet non finalisé en cours de developpement</p>
 <h1 id="zumo-carto"><a name="user-content-zumo-carto" href="#zumo-carto" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Zumo-Carto</h1>
-<p>le but est de crée un robot pour faire du SLAM à partir :</p>
+<p>le but est de créer un robot pour faire du SLAM à partir :</p>
 <ul>
 <li>
 <p>d&rsquo;une plateforme Pololu Zumo<br />
 <a href="https://www.pololu.com/product/2506">https://www.pololu.com/product/2506</a><br />
-<img alt="alt text" src="https://a.pololu-files.com/picture/0J4110.1200.jpg?a2562fe9f34e986d0d194118dcff0d58" /></p>
+<img 20px_="20px;" alt="alt text" block_="block;" display:="display:" max-width:="max-width:" src="https://a.pololu-files.com/picture/0J4110.1200.jpg?a2562fe9f34e986d0d194118dcff0d58" /></p>
 </li>
 <li>
 <p>de 2 encoders<br />
@@ -1041,7 +1041,7 @@ body .markdown-body
 </li>
 </ul>
 <h2 id="integration"><a name="user-content-integration" href="#integration" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>INTEGRATION</h2>
-<p>piece d&rsquo;interface zumo/Rplider en impression 3D (dans le dossier URDF)<br />
+<p>piece d&rsquo;interface Zumo/Rplidar en impression 3D (dans le dossier URDF)<br />
 <img alt="alt text" src="https://github.com/Rastafouille/Zumo-Carto/raw/master/galerie/3D.jpg" /><br />
 <img alt="alt text" src="https://github.com/Rastafouille/Zumo-Carto/raw/master/galerie/robot.jpg" /></p>
 <h2 id="rviz"><a name="user-content-rviz" href="#rviz" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>RVIZ</h2>
@@ -1052,11 +1052,12 @@ body .markdown-body
 </code></pre>
 <p>Ce noeud permet la communication série avec la carte Arduino et son shield Zumo.<br />
 Le robot envoie une trame d&rsquo;état de ses capteurs et actionneurs :<br />
-<code>!AN:[TEMPS],[ACCELERATION_X],[ACCELERATION_Y],[ACCELERATION_Z],[MAGNETOMETRE_X],[MAGNETOMETRE_Y],[MAGNETOMETRE_Z],[VITESSE_MOTEUR_LEFT],[VITESSE_MOTEUR_RIGHT]\r\n</code><br />
+<code>!AN:[TEMPS],[ACCELERATION_X],[ACCELERATION_Y],[ACCELERATION_Z],[MAGNETOMETRE_X],[MAGNETOMETRE_Y],[MAGNETOMETRE_Z],[VITESSE_MOTEUR_LEFT],[VITESSE_MOTEUR_RIGHT],[ENCODER_LEFT],[ENCODER_RIGHT]\r\n</code><br />
 et attend la réception de la trame de consigne :<br />
 <code>~X;[CONSIGNE_VITESSE];[CONSIGNE_ANGLE];#</code></p>
-<p>A partir de la trame capteurs, le noeud publie 1 topic :<br />
-- <code>/zumo/imu</code> de type <code>sensor_msgs.Imu</code></p>
+<p>A partir de la trame capteurs, le noeud publie 2 topics :<br />
+- <code>/ZumoCarto/imu</code> de type <code>sensor_msgs.Imu</code><br />
+- <code>/ZumoCarto/odom</code> de type <code>nav_msgs.Odometry</code></p>
 <p>La construction de la trame de consigne est faite à partir des données souscrites sur le topic <code>/nunchuk/cmd_vel</code> de type <code>geometry_msgs.Twist</code>. Seules les valeurs <code>linear.x</code> et <code>angular.z</code> de <code>/nunchuk/cmd_vel</code> sont utilisées pour piloter le robot. Ces valeurs sont des <code>float</code> compris entre -1 à 1. Elles sont ensuite multipliées par 100 et transformées en <code>int</code> avant d&rsquo;être envoyées dans la trame de consigne.</p>
 <h3 id="parametres"><a name="user-content-parametres" href="#parametres" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Paramètres</h3>
 <p>2 paramètres ROS sont définis pour ce noeud :</p>
@@ -1073,7 +1074,8 @@ Pour ma part, la clé Bluetooth doit être réinitialisée à chaque redémarrag
 Seul le joystick 2 axes du Nunchuk est utilisé :</p>
 <p><img alt="alt text" src="https://agita/cea-robotics/ros-zumo/raw/master/Galerie/pilotage.png" /></p>
 <h2 id="rplidar-node"><a name="user-content-rplidar-node" href="#rplidar-node" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>RPLIDAR node</h2>
-<p>a completer</p>
+<p>Il s&rsquo;agit du noeud <code>rplidarNode</code>fournit par Robopeak :<br />
+<a href="https://github.com/robopeak/rplidar_ros">https://github.com/robopeak/rplidar_ros</a></p>
 <h2 id="urdf"><a name="user-content-urdf" href="#urdf" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>URDF</h2>
 <p>a completer</p>
 <h2 id="launch-file"><a name="user-content-launch-file" href="#launch-file" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Launch file</h2>
