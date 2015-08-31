@@ -1,5 +1,0 @@
-digraph G {
-"map" -> "odom"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.210 Hz\nMost recent transform: 1433783382.529 \nBuffer length: 4.979 sec\n"];
-"base_link" -> "imu"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.210 Hz\nMost recent transform: 1433783382.529 \nBuffer length: 4.979 sec\n"];
-"odom" -> "base_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 62.619 Hz\nMost recent transform: 1433783382.529 \nBuffer length: 5.478 sec\n"];
-}
